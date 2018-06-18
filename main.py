@@ -27,7 +27,7 @@ def get_token():
 
 
 def text_handler(bot, update):
-    update.message.reply_text("Better send me a file with .jpg extension")
+    update.message.reply_text("Better send me a file with .jpg or .png extension")
 
 
 def letscrop(file_path, chat_dir, extension, squares=False, update=None, remove=True):
@@ -97,7 +97,7 @@ def cropper(bot, update):
         file_name = update.message.document.file_name
 
         extension = file_name[-4:].lower()
-        if extentstion not in [".jpg", ".png"]:
+        if extension not in [".jpg", ".png"]:
             update.message.reply_text("Better send me a file with .jpg or .png extension")
             return
 
