@@ -30,7 +30,7 @@ def text_handler(bot, update):
     update.message.reply_text("Better send me a file with .jpg extension")
 
 
-def letscrop(file_path, chat_dir, squares=False, update=None, remove=True):
+def letscrop(file_path, chat_dir, extension, squares=False, update=None, remove=True):
     img = Image.open(file_path)
     width, height = img.size
 
@@ -61,7 +61,7 @@ def letscrop(file_path, chat_dir, squares=False, update=None, remove=True):
     for slice_num in range(slices):
         working_slice = img.crop((left, vert_shift, right, vert_shift + slice_height))
 
-        slice_name = os.path.join(chat_dir, str(slice_num) + "_" + "slice" + ".jpg")
+        slice_name = os.path.join(chat_dir, str(slice_num) + "_" + "slice" + extension)
         working_slice.save(slice_name)
 
         right += slice_width
@@ -96,8 +96,9 @@ def cropper(bot, update):
         # Document case
         file_name = update.message.document.file_name
 
-        if file_name[-4:].lower() != ".jpg":
-            update.message.reply_text("Better send me a file with .jpg extension")
+        extension = file_name[-4:].lower()
+        if extentstion not in [".jpg", ".png"]:
+            update.message.reply_text("Better send me a file with .jpg or .png extension")
             return
 
         file = bot.get_file(update.message.document.file_id)
@@ -108,7 +109,7 @@ def cropper(bot, update):
         return
 
     update.message.reply_text("Cropping ...")
-    letscrop(file_path, chat_dir, update=update)
+    letscrop(file_path, chat_dir, extension, update=update)
 
 
 def error(bot, update, error):
