@@ -86,11 +86,12 @@ def cropper(bot, update):
     if not os.path.exists(chat_dir):
         os.mkdir(chat_dir)
 
+    extension = ".jpg"
     if update.message.document is None:
         # Photo case
         file_id = update.message.photo[-1].file_id
         file = bot.get_file(file_id)
-        file_path = os.path.join(chat_dir, file_id + ".jpg")
+        file_path = os.path.join(chat_dir, file_id + extension)
         file.download(file_path)
     elif update.message.photo == [] and update.message.document is not None:
         # Document case
