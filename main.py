@@ -118,10 +118,15 @@ def error(bot, update, error):
 
 
 def main():
-    updater = Updater(get_token())
-    bot = telegram.Bot(token=get_token())
+    token = get_token()
+    print('-> USE PROXY')
+    req = telegram.utils.request.Request(proxy_url='socks5h://127.0.0.1:9050',
+            read_timeout=30, connect_timeout=20,
+            con_pool_size=10)
+    bot = telegram.Bot(token=token, request=req)
+    
+    updater = Updater(bot=bot)
     dp = updater.dispatcher
-
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.photo | Filters.document, cropper))
     dp.add_handler(MessageHandler(Filters.text, text_handler))
